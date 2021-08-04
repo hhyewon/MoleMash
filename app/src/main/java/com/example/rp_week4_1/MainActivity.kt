@@ -10,65 +10,67 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.rp_week4_1.databinding.ActivityMainBinding
 import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-    var time: TextView? = null
-    var count: TextView? = null
-    var start: Button? = null
+    private lateinit var binding: ActivityMainBinding
+//    var time: TextView? = null
+//    var count: TextView? = null
+//    var start: Button? = null
     var img_array = arrayOfNulls<ImageView>(9)
     var imageID = intArrayOf(
-        R.id.imageView1,
-        R.id.imageView2,
-        R.id.imageView3,
-        R.id.imageView4,
-        R.id.imageView5,
-        R.id.imageView6,
-        R.id.imageView7,
-        R.id.imageView8,
-        R.id.imageView9
+        R.id.mole1,
+        R.id.mole2,
+        R.id.mole3,
+        R.id.mole4,
+        R.id.mole5,
+        R.id.mole6,
+        R.id.mole7,
+        R.id.mole8,
+        R.id.mole9
     )
     val TAG_ON = "on" //태그용
     val TAG_OFF = "off"
     var score = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        time = findViewById<View>(R.id.time) as TextView
-        count = findViewById<View>(R.id.count) as TextView
-        start = findViewById<View>(R.id.start) as Button
+        binding= ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         for (i in img_array.indices) {
 /*int img_id = getResources().getIdentifier("imageView"+i+1, "id", "com.example.pc_20.molegame");*/
             img_array[i] = findViewById<View>(imageID[i]) as ImageView
-            img_array[i]!!.setImageResource(R.drawable.moledown)
+            img_array[i]!!.setImageResource(R.drawable.mole_be)
             img_array[i]!!.tag = TAG_OFF
             img_array[i]!!.setOnClickListener { v ->
 
                 //두더지이미지에 온클릭리스너
                 if ((v as ImageView).tag.toString() == TAG_ON) {
                     Toast.makeText(applicationContext, "good", Toast.LENGTH_LONG).show()
-                    count!!.text = score++.toString()
-                    v.setImageResource(R.drawable.moledown)
+                    binding.timerTv!!.text = score++.toString()
+                    v.setImageResource(R.drawable.mole_be)
                     v.setTag(TAG_OFF)
                 } else {
                     Toast.makeText(applicationContext, "bad", Toast.LENGTH_LONG).show()
                     if (score <= 0) {
                         score = 0
-                        count!!.text = score.toString()
+                        binding.scoreTv!!.text = score.toString()
                     } else {
-                        count!!.text = score--.toString()
+                        binding.scoreTv!!.text = score--.toString()
                     }
-                    v.setImageResource(R.drawable.moleup)
+                    v.setImageResource(R.drawable.mole)
                     v.setTag(TAG_ON)
                 }
             }
         }
-        time!!.text = "30초"
-        count!!.text = "0마리"
-        start!!.setOnClickListener {
-            start!!.visibility = View.GONE
-            count!!.visibility = View.VISIBLE
+        binding.timerTv!!.text = "30초"
+        binding.scoreTv!!.text = "0마리"
+        binding.startTv!!.setOnClickListener {
+            binding.startTv!!.visibility = View.GONE
+            binding.scoreTv!!.visibility = View.VISIBLE
+            binding.moleLl.visibility=View.VISIBLE
             Thread(timeCheck()).start()
             for (i in img_array.indices) {
                 Thread(DThread(i)).start()
@@ -78,13 +80,13 @@ class MainActivity : AppCompatActivity() {
 
     var onHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
-            img_array[msg.arg1]!!.setImageResource(R.drawable.moleup)
+            img_array[msg.arg1]!!.setImageResource(R.drawable.mole)
             img_array[msg.arg1]!!.tag = TAG_ON //올라오면 ON태그 달아줌
         }
     }
     var offHandler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
-            img_array[msg.arg1]!!.setImageResource(R.drawable.moledown)
+            img_array[msg.arg1]!!.setImageResource(R.drawable.mole_be)
             img_array[msg.arg1]!!.tag = TAG_OFF //내려오면 OFF태그 달아줌
         }
     }
@@ -118,7 +120,7 @@ class MainActivity : AppCompatActivity() {
 
     var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
-            time!!.text = msg.arg1.toString() + "초"
+            binding.timerTv!!.text = msg.arg1.toString() + "초"
         }
     }
 
@@ -135,10 +137,16 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
-            val intent = Intent(this@MainActivity, ResultActivity::class.java)
+            intent = Intent(this@MainActivity, ResultActivity::class.java)
             intent.putExtra("score", score)
             startActivity(intent)
-            finish()
+        }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus){
+            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
         }
     }
 }

@@ -13,4 +13,214 @@
         android:layout_height="match_parent"
         android:src="@drawable/background"/>
 
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="20dp"
+        android:id="@+id/score_cv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/timer_cv"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:textStyle="bold"
+
+        app:cardBackgroundColor="#26111111"
+        app:cardCornerRadius="10dp">
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <TextView
+            android:fontFamily="@font/font"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="점수"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/score_tv"
+            android:textSize="20sp"
+            android:fontFamily="@font/font"
+
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="82"
+            android:textStyle="bold"
+            android:textColor="#ea93c5"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="20dp"
+
+        android:id="@+id/timer_cv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/score_cv"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:cardBackgroundColor="#26111111"
+        app:cardCornerRadius="10dp">
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:fontFamily="@font/font"
+                android:layout_gravity="center"
+
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="남은시간"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/timer_tv"
+                android:textSize="20sp"
+                android:fontFamily="@font/font"
+
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18"
+                android:textStyle="bold"
+                android:textColor="#fbec01"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/mole_gl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.21"/>
+
+    <TextView
+        android:fontFamily="@font/font"
+        android:id="@+id/start_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="START?"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/mole_gl"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@color/black"
+        android:textSize="80sp"/>
+
+    <LinearLayout
+        android:id="@+id/mole_ll"
+        android:visibility="invisible"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:weightSum="3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="@+id/mole_gl"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout
+            android:weightSum="3"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp">
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:id="@+id/mole1"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mole_be"/>
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:id="@+id/mole2"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mole_be"/>
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:id="@+id/mole3"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mole_be"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:weightSum="3"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp">
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:id="@+id/mole4"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mole_be"/>
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:id="@+id/mole5"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mole_be"/>
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:id="@+id/mole6"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mole_be"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:weightSum="3"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp">
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:id="@+id/mole7"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mole_be"/>
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:id="@+id/mole8"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mole_be"/>
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:id="@+id/mole9"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mole_be"/>
+
+        </LinearLayout>
+
+
+
+
+
+
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

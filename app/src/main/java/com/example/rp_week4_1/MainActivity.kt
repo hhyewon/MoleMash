@@ -1,24 +1,24 @@
 package com.example.rp_week4_1
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.transition.Transition
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rp_week4_1.databinding.ActivityMainBinding
+import github.hongbeomi.touchmouse.TouchMouseManager
+import github.hongbeomi.touchmouse.TouchMouseOption
 import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
-//    var time: TextView? = null
-//    var count: TextView? = null
-//    var start: Button? = null
     var img_array = arrayOfNulls<ImageView>(9)
     var imageID = intArrayOf(
         R.id.mole1,
@@ -36,8 +36,14 @@ class MainActivity : AppCompatActivity() {
     var score = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        TouchMouseManager.setOptions(
+            TouchMouseOption(
+                cursorDrawable = R.drawable.mouse
+            )
+        )
 
         for (i in img_array.indices) {
 /*int img_id = getResources().getIdentifier("imageView"+i+1, "id", "com.example.pc_20.molegame");*/
@@ -48,29 +54,36 @@ class MainActivity : AppCompatActivity() {
 
                 //두더지이미지에 온클릭리스너
                 if ((v as ImageView).tag.toString() == TAG_ON) {
-                    Toast.makeText(applicationContext, "good", Toast.LENGTH_LONG).show()
-                    binding.timerTv!!.text = score++.toString()
+//                    Toast.makeText(applicationContext, "good", Toast.LENGTH_LONG).show()
+                    score++
+                    binding.scoreLi.text = "+1" //0.5초간 표시 되도록 수정하기
+                    binding.scoreLi.setTextColor(Color.parseColor("#fee203"))
+                    binding.scoreTv.text = score.toString()
+//                    binding.scoreTv.text = score++.toString()
                     v.setImageResource(R.drawable.mole_be)
                     v.setTag(TAG_OFF)
                 } else {
-                    Toast.makeText(applicationContext, "bad", Toast.LENGTH_LONG).show()
-                    if (score <= 0) {
+//                    Toast.makeText(applicationContext, "bad", Toast.LENGTH_LONG).show()
+                    binding.scoreLi.text = "-1"
+                    binding.scoreLi.setTextColor(Color.parseColor("#fa2804"))
+                    if (score == 0) {
                         score = 0
-                        binding.scoreTv!!.text = score.toString()
+                        binding.scoreTv.text = score.toString()
                     } else {
-                        binding.scoreTv!!.text = score--.toString()
+                        score--
+                        binding.scoreTv.text = score.toString()
                     }
-                    v.setImageResource(R.drawable.mole)
-                    v.setTag(TAG_ON)
+//                    v.setImageResource(R.drawable.mole)
+//                    v.setTag(TAG_ON)
                 }
             }
         }
         binding.timerTv!!.text = "30초"
-        binding.scoreTv!!.text = "0마리"
+        binding.scoreTv!!.text = "0"
         binding.startTv!!.setOnClickListener {
             binding.startTv!!.visibility = View.GONE
             binding.scoreTv!!.visibility = View.VISIBLE
-            binding.moleLl.visibility=View.VISIBLE
+            binding.moleLl.visibility = View.VISIBLE
             Thread(timeCheck()).start()
             for (i in img_array.indices) {
                 Thread(DThread(i)).start()
@@ -140,12 +153,14 @@ class MainActivity : AppCompatActivity() {
             intent = Intent(this@MainActivity, ResultActivity::class.java)
             intent.putExtra("score", score)
             startActivity(intent)
+            finish()
+
         }
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (hasFocus){
+        if (hasFocus) {
             window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
         }
     }

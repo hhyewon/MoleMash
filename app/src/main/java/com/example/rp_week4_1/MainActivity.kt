@@ -2,21 +2,18 @@ package com.example.rp_week4_1
 
 import android.content.Intent
 import android.graphics.Color
+import android.media.AudioManager
+import android.media.SoundPool
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.text.TextUtils.join
-import android.transition.Transition
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rp_week4_1.databinding.ActivityMainBinding
 import github.hongbeomi.touchmouse.TouchMouseManager
 import github.hongbeomi.touchmouse.TouchMouseOption
-import java.lang.String.join
 import java.util.*
-import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity(), MyCustomDialogInterface {
@@ -51,7 +48,9 @@ class MainActivity : AppCompatActivity(), MyCustomDialogInterface {
                 cursorDrawable = R.drawable.mouse
             )
         )
-
+        var soundPool: SoundPool
+        soundPool = SoundPool(5, AudioManager.STREAM_MUSIC, 0)
+        val soundID = soundPool.load(this, R.raw.bb, 0);
         for (i in img_array.indices) {
 /*int img_id = getResources().getIdentifier("imageView"+i+1, "id", "com.example.pc_20.molegame");*/
             img_array[i] = findViewById<View>(imageID[i]) as ImageView
@@ -62,7 +61,11 @@ class MainActivity : AppCompatActivity(), MyCustomDialogInterface {
                 //두더지이미지에 온클릭리스너
                 if ((v as ImageView).tag.toString() == TAG_ON) {
 //                    Toast.makeText(applicationContext, "good", Toast.LENGTH_LONG).show()
+
+                    soundPool.play(soundID, 1.0F, 1.0F, 1, 0, 1.0F)
+
                     score++
+//                    soundPool.stop(soundID);
                     Thread {
                         handler.post {
                             binding.scoreLi.text = "+1" //0.5초간 표시 되도록 수정하기
@@ -94,19 +97,25 @@ class MainActivity : AppCompatActivity(), MyCustomDialogInterface {
                     }.start()
 
 
-                    if (score == 0) {
-                        score = 0
-                        binding.scoreTv.text = score.toString()
-                    } else {
+//                    if (score == 0) {
+//                        score = 0
+//                        binding.scoreTv.text = score.toString()
+//                    } else {
                         score--
                         binding.scoreTv.text = score.toString()
+                    if (score == -3){
+                        intent = Intent(this, ResultActivity::class.java)
+                        intent.putExtra("score", score)
+                        startActivity(intent)
+                        finish()
                     }
+//                    }
 //                    v.setImageResource(R.drawable.mole)
 //                    v.setTag(TAG_ON)
                 }
             }
         }
-        binding.timerTv!!.text = "30초"
+        binding.timerTv!!.text = "20초"
         binding.scoreTv!!.text = "0"
         binding.startTv!!.setOnClickListener {
             binding.startTv!!.visibility = View.GONE
@@ -143,7 +152,7 @@ class MainActivity : AppCompatActivity(), MyCustomDialogInterface {
                     Thread.sleep(offtime.toLong()) //두더지가 내려가있는 시간
                     msg1.arg1 = index
                     onHandler.sendMessage(msg1)
-                    val ontime = Random().nextInt(1000) + 500
+                    val ontime = Random().nextInt(1300) + 500
                     Thread.sleep(ontime.toLong()) //두더지가 올라가있는 시간
                     val msg2 = Message()
                     msg2.arg1 = index
@@ -166,7 +175,7 @@ class MainActivity : AppCompatActivity(), MyCustomDialogInterface {
     }
 
     inner class timeCheck : Runnable {
-        val MAXTIME = 30
+        val MAXTIME = 20
         override fun run() {
             for (i in MAXTIME downTo 0) {
                 val msg = Message()
@@ -177,6 +186,7 @@ class MainActivity : AppCompatActivity(), MyCustomDialogInterface {
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
+
             }
 
             intent = Intent(this@MainActivity, ResultActivity::class.java)
@@ -201,16 +211,12 @@ class MainActivity : AppCompatActivity(), MyCustomDialogInterface {
         super.onPause()
         isPlaying = false
 
-            Thread{
-                handler.post(){
 
-                    Thread(timeCheck())!!.join()
-                }
-            }.join()
-            for (i in img_array.indices) {
-                Thread(DThread(i))!!.join()
-            }
+        Thread(timeCheck())!!.join()
 
+        for (i in img_array.indices) {
+            Thread(DThread(i))!!.join()
+        }
 
 
     }
@@ -218,15 +224,18 @@ class MainActivity : AppCompatActivity(), MyCustomDialogInterface {
 
     override fun onResume() {
         super.onResume()
-        isPlaying = true
-        val dialogActivity = DialogActivity(this, this)
+        Thread {
 
-
-        Thread(timeCheck())!!.start()
-        for (i in img_array.indices) {
-            Thread(DThread(i))!!.start()
         }
-        dialogActivity.show()
+//        isPlaying = true
+//        val dialogActivity = DialogActivity(this, this)
+//
+//
+//        Thread(timeCheck())!!.start()
+//        for (i in img_array.indices) {
+//            Thread(DThread(i))!!.start()
+//        }
+//        dialogActivity.show()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

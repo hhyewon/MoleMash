@@ -13,98 +13,25 @@
         android:scaleType="fitXY"
         android:src="@drawable/background" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/score_cv"
-        app:cardElevation="0dp"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/result_gradient" />
 
-        android:layout_width="85dp"
-        android:layout_height="80dp"
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textStyle="bold"
-        app:cardBackgroundColor="#40111111"
-
-        app:cardCornerRadius="10dp"
+        android:fontFamily="@font/font"
+        android:text="GAME\nOVER"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="55sp"
+        app:layout_constraintBottom_toBottomOf="@+id/mole_gl"
         app:layout_constraintLeft_toLeftOf="parent"
-
-        app:layout_constraintRight_toLeftOf="@+id/timer_cv"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:fontFamily="@font/font"
-
-                android:layout_height="wrap_content"
-                android:text="점수"
-                android:textColor="@color/white"
-                android:textSize="17sp"
-                android:layout_marginBottom="5dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/score_tv"
-                android:layout_width="wrap_content"
-                android:fontFamily="@font/font"
-
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="82"
-                android:textColor="#ea93c5"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/timer_cv"
-        app:cardElevation="0dp"
-
-        android:layout_width="85dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="20dp"
-        app:cardBackgroundColor="#40111111"
-
-        app:cardCornerRadius="10dp"
-        app:layout_constraintLeft_toRightOf="@+id/score_cv"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:fontFamily="@font/font"
-                android:layout_height="wrap_content"
-                android:text="남은시간"
-                android:textColor="@color/white"
-                android:textSize="17sp"
-                android:layout_marginBottom="5dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:fontFamily="@font/font"
-
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="0초"
-                android:textColor="#fbec01"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/mole_gl"
@@ -114,50 +41,77 @@
         app:layout_constraintGuide_percent="0.21" />
 
     <TextView
-        android:gravity="center"
         android:id="@+id/new_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="30sp"
-        android:textColor="#c84839"
-        android:fontFamily="@font/font"
-        app:layout_constraintVertical_chainStyle="packed"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/sub_result"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/mole_gl" />
-
-    <TextView
-        android:gravity="center"
-        android:id="@+id/sub_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="12"
-        android:textSize="30sp"
-        android:textColor="#ea93c5"
         android:fontFamily="@font/font"
-        app:layout_constraintTop_toBottomOf="@id/new_score"
+        android:gravity="center"
+        android:text="🔻당신의 점수는🔻"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/result_cv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mole_gl"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/result_cv"
+        android:layout_marginBottom="50dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:cardBackgroundColor="#40111111"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/sub_retry"
-        />
+        app:layout_constraintLeft_toLeftOf="@+id/new_score"
+        app:layout_constraintRight_toRightOf="@+id/new_score"
+        app:layout_constraintTop_toBottomOf="@id/new_score">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/sub_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font"
+                android:gravity="center"
+                android:text="12"
+                android:textColor="#32edfa"
+                android:textSize="30sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font"
+                android:gravity="center"
+                android:text=" 점"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 
     <TextView
         android:id="@+id/sub_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_margin="20dp"
         android:fontFamily="@font/font"
         android:text="RETRY?"
-        android:textSize="70sp"
         android:textColor="@color/black"
+        android:textSize="70sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sub_result"
-        />
+        app:layout_constraintTop_toBottomOf="@id/result_cv" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

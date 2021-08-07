@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.text.TextUtils.join
 import android.transition.Transition
 import android.view.View
 import android.widget.ImageView
@@ -13,10 +14,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.rp_week4_1.databinding.ActivityMainBinding
 import github.hongbeomi.touchmouse.TouchMouseManager
 import github.hongbeomi.touchmouse.TouchMouseOption
+import java.lang.String.join
 import java.util.*
+import kotlin.concurrent.thread
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MyCustomDialogInterface {
+
+    var isPlaying = false
 
     private lateinit var binding: ActivityMainBinding
     var img_array = arrayOfNulls<ImageView>(9)
@@ -38,6 +43,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        isPlaying = false
+//        val dialogActivity = DialogActivity(this,this)
 
         TouchMouseManager.setOptions(
             TouchMouseOption(
@@ -56,16 +63,37 @@ class MainActivity : AppCompatActivity() {
                 if ((v as ImageView).tag.toString() == TAG_ON) {
 //                    Toast.makeText(applicationContext, "good", Toast.LENGTH_LONG).show()
                     score++
-                    binding.scoreLi.text = "+1" //0.5초간 표시 되도록 수정하기
-                    binding.scoreLi.setTextColor(Color.parseColor("#fee203"))
+                    Thread {
+                        handler.post {
+                            binding.scoreLi.text = "+1" //0.5초간 표시 되도록 수정하기
+                            binding.scoreLi.setTextColor(Color.parseColor("#fee203"))
+                        }
+                        Thread.sleep(500)
+                        handler.post {
+                            binding.scoreLi.text = ""
+                        }
+                    }.start()
+
                     binding.scoreTv.text = score.toString()
 //                    binding.scoreTv.text = score++.toString()
-                    v.setImageResource(R.drawable.mole_be)
+                    v.setImageResource(R.drawable.mole_click2)
                     v.setTag(TAG_OFF)
                 } else {
 //                    Toast.makeText(applicationContext, "bad", Toast.LENGTH_LONG).show()
-                    binding.scoreLi.text = "-1"
-                    binding.scoreLi.setTextColor(Color.parseColor("#fa2804"))
+                    Thread {
+                        handler.post {
+                            binding.scoreLi.text = "-1"
+                            //0.5초간 표시 되도록 수정하기
+                            binding.scoreLi.setTextColor(Color.parseColor("#fa2804"))
+
+                        }
+                        Thread.sleep(500)
+                        handler.post {
+                            binding.scoreLi.text = ""
+                        }
+                    }.start()
+
+
                     if (score == 0) {
                         score = 0
                         binding.scoreTv.text = score.toString()
@@ -150,6 +178,7 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
+
             intent = Intent(this@MainActivity, ResultActivity::class.java)
             intent.putExtra("score", score)
             startActivity(intent)
@@ -158,10 +187,53 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun onClick() {
+        var dialog = Intent(this, DialogActivity::class.java)
+        startActivity(dialog)
+    }
+
+    override fun onYes() {
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isPlaying = false
+
+            Thread{
+                handler.post(){
+
+                    Thread(timeCheck())!!.join()
+                }
+            }.join()
+            for (i in img_array.indices) {
+                Thread(DThread(i))!!.join()
+            }
+
+
+
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        isPlaying = true
+        val dialogActivity = DialogActivity(this, this)
+
+
+        Thread(timeCheck())!!.start()
+        for (i in img_array.indices) {
+            Thread(DThread(i))!!.start()
+        }
+        dialogActivity.show()
+    }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
         }
     }
+
 }

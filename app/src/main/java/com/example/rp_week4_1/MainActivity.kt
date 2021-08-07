@@ -212,11 +212,11 @@ class MainActivity : AppCompatActivity(), MyCustomDialogInterface {
         isPlaying = false
 
 
-        Thread(timeCheck())!!.join()
-
-        for (i in img_array.indices) {
-            Thread(DThread(i))!!.join()
-        }
+//        Thread(timeCheck())!!.join()
+//
+//        for (i in img_array.indices) {
+//            Thread(DThread(i))!!.join()
+//        }
 
 
     }
